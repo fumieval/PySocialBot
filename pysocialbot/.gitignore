@@ -1,8 +1,0 @@
-*.pyc
-*.egg-info
-*.xml
-*.o
-*.so
-*.log
-build
-dist
