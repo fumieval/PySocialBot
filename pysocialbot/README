@@ -1,0 +1,29 @@
+PySocialBot - Python Bot Framework
+http://botis.org/wiki/PySocialBot
+
+2011/6/18 Fumiaki Kinoshita
+
+Features:
+	PySocialBot is very easy way to create your own bot.
+	
+	To know how to make a bot with PySocialBot, see the following code:
+	
+	--- examples/intro.py ---
+
+	import datetime
+	from pysocialbot import launcher, twitter
+	 
+	def posttime(env):
+	    return env.api.post(datetime.datetime.today().strftime("It's %I %p!"))
+	 
+	if __name__ == "__main__":
+	    BOT = launcher.Daemon()
+	    BOT.trigger = {launcher.Hourly(): launcher.Call(posttime)}
+	    BOT.resetstate()
+	    BOT.env.api = twitter.Api("MyAccount")
+	    BOT.run()
+
+	So, you can create bot only 10 lines using PySocialBot.
+
+Getting Started:
+	See examples/manage.default.py.

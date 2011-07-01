@@ -1,0 +1,23 @@
+2011/6/24 PySocialBot 0.2.4 Released
+	Implement new feature:
+		Trigger :: launcher.Time
+		Trigger :: launcher.Delay
+		Action :: launcher.Call
+		Action :: launcher.Dump
+	Changes:
+		launcher
+			refactored
+		twitter
+			refactored
+		twitter.userstream.StreamHandler
+			renamed: onstatus -> status
+		twitter.register
+			refactored
+		twitter.userstream
+			added docstring
+		util
+			added function: attempt
+		examples
+			added __init__, manage.default.py
+			
+2011/6/18 PySocialBot 0.2.3 Released
