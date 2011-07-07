@@ -23,7 +23,6 @@ class Association:
                 if not key in total:
                     total[key] = 0
                 total[key] += value
-        S = sum(total.itervalues())
-        result = filter(lambda x: x[0] == S, total.iteritems())
-        if result:
-            return random.choice(result)[1]
+        maxvalue = max(total.itervalues())
+        return map(lambda xs: xs[0],
+                   itertools.ifilter(lambda xs: xs[1] == maxvalue, total.iteritems()))
