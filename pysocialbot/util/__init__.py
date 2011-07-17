@@ -26,10 +26,12 @@ def retry(exception=Exception, interval=0, count=-1):
     def wrapper(f):
         @functools.wraps(f)
         def _(*args, **kwargs):
-            for i in xrange(count):
+            i = count
+            while i != 0:
                 try:
                     return f(*args, **kwargs)
                 except exception:
                     time.sleep(interval)
+                i -= 1
         return _
     return wrapper
