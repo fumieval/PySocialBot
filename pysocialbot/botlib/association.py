@@ -3,7 +3,6 @@ PySocialBot Botlib :: Association Library
 """
 
 import itertools
-import random
 
 class Association:
     def __init__(self):
@@ -25,4 +24,5 @@ class Association:
                 total[key] += value
         maxvalue = max(total.itervalues())
         return map(lambda xs: xs[0],
-                   itertools.ifilter(lambda xs: xs[1] == maxvalue, total.iteritems()))
+                   itertools.ifilter(lambda xs: xs[1] == maxvalue,
+                                     total.iteritems()))
