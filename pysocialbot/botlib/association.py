@@ -7,12 +7,17 @@ import itertools
 import random
 import cPickle as pickle
 
+def countif(pred, iterable):
+    n = 0
+    for i in iterable:
+        n += 1
+    return n
 class Association:
     def __init__(self):
         self.table = {}
         
     def learn(self, source, target):
-        for i, j in itertools.product(source, target):
+        for i, j in itertools.product(set(source), set(target)):
             if not i in self.table:
                 self.table[i] = {}
             if not j in self.table[i]:

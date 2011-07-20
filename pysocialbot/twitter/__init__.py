@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 import itertools
 import tweepy
 import re
+import xml.sax.saxutils
 
 import pysocialbot
 from pysocialbot.twitter.register import user_database, instant_auth
@@ -20,7 +21,7 @@ RETRY = pysocialbot.util.retry(tweepy.error.TweepError,
                                TW_RETRY_INTERVAL,
                                TW_RETRY_COUNT)
 
-ENTITIES = re.compile("RT @\w+.*|\.(@\w+ )+|http:\/\/(\w+|\.|\/)*|#\w+|@\w+")
+ENTITIES = re.compile("RT @\w+.*|\.(@\w+ )+|http:\/\/(\w+|\.|\/)*|(^|\s)#.+($|\s)|@\w+")
 
 def cuser(obj):
     """convert object to user."""
@@ -133,6 +134,6 @@ class Status(pysocialbot.Object):
             new.__dict__[attr] = self.__dict__[attr]
 
     def cleaned(self):
-        return ENTITIES.sub("", self.text)
+        return ENTITIES.sub("", xml.sax.saxutils.unescape(self.text))
 
 STATUS_FILTER_MINIMAL=['user', 'text', 'source']
