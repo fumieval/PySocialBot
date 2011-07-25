@@ -1,42 +1,7 @@
-"""
-Common struct
-"""
-import itertools
-import cPickle as pickle
 
-class Object():
-    
-    """Generic Structure."""
-    
-    def __init__(self, data={}):
-        for key, value in data.itervalues():
-            if isinstance(value, dict) and "Object" in value: 
-                self.__dict__[key] = Object(value)
-            else:
-                self.__dict__[key] = value
-
-    def realized(self):
-        """Get data as dictionary."""
-        result = {"Object": True}
-        for key in self.__dict__:
-            if isinstance(self.__dict__[key], Object):
-                result[key] = self.__dict__[key].asdict()
-            else:
-                result[key] = self.__dict__[key]
-        return result
-    
-    def iteritems(self):
-        return self.__dict__.iteritems()
-    
-    def keys(self):
-        """Get keys of object."""
-        return self.__dict__.keys()
-    
-    def __repr__(self):
-        return self.realized().__repr__()
 
 class Action():
-    """Action class."""
+    """Action base."""
     def __init__(self):
         pass
     def __call__(self, env):
@@ -106,12 +71,3 @@ class Call(Action):
         return self.function(env)
     def __repr__(self):
         return self.function.__doc__
-
-class Dump(Action):
-    """Dump environment variables."""
-    def __init__(self, entries, path):
-        Action.__init__(self)
-        self.entries = entries
-        self.path = path
-    def __call__(self, env):
-        pickle.dump(dict(itertools.ifilter(lambda xs: xs[0] in self.entries, env.iterkeys())))

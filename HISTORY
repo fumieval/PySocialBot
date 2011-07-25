@@ -1,5 +1,22 @@
+2011/7/25 PySocialBot 0.3.0- Released
+	Implemented new feature:
+		botlib (botlib helps you to create a bot)
+			association
+			pattern
+		prototype (initialize daemon easily)
+	Changes:
+		refactored
+		
+		Object -> struct.Object
+		launcher.Action -> action.Action
+		launcher.Trigger -> trigger.Trigger
+		util.convert -> DELETED
+		util.signature -> DELETED
+		
+		and deleted unnecessary code
+
 2011/6/24 PySocialBot 0.2.4 Released
-	Implement new feature:
+	Implemented new feature:
 		Trigger :: launcher.Time
 		Trigger :: launcher.Delay
 		Action :: launcher.Call

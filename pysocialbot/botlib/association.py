@@ -7,11 +7,6 @@ import itertools
 import random
 import cPickle as pickle
 
-def countif(pred, iterable):
-    n = 0
-    for i in iterable:
-        n += 1
-    return n
 class Association:
     def __init__(self):
         self.table = {}

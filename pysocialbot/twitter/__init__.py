@@ -11,15 +11,14 @@ import tweepy
 import re
 import xml.sax.saxutils
 
-import pysocialbot
 from pysocialbot.twitter.register import user_database, instant_auth
 from pysocialbot.settings import (TW_RETRY_INTERVAL, TW_RETRY_COUNT,
                                   TW_CONSUMER_KEY, TW_CONSUMER_SECRET)
-from pysocialbot.util.convert import convert_class, convert_object
+from pysocialbot.util import retry, convert_class
+from pysocialbot.struct import Object
 
-RETRY = pysocialbot.util.retry(tweepy.error.TweepError,
-                               TW_RETRY_INTERVAL,
-                               TW_RETRY_COUNT)
+RETRY = retry(tweepy.error.TweepError,
+              TW_RETRY_INTERVAL, TW_RETRY_COUNT)
 
 ENTITIES = re.compile("RT @\w+.*|\.(@\w+ )+|http:\/\/(\w+|\.|\/)*|(^|\s)#.+($|\s)|@\w+")
 
@@ -114,20 +113,21 @@ class Api():
     def search(self, query, since_id):
         return RETRY(lambda: self.api.search(query, since_id=since_id))()
 
-class User(pysocialbot.Object):
+class User(Object):
     
     """User Object."""
     
     def __unicode__(self):
         return "@%s(%s)" % (self.screen_name, self.name)
 
-class Status(pysocialbot.Object):
+class Status(Object):
     
     """Status Object."""
     
     def __unicode__(self):
         return "@%s: %s via %s" % (self.user.screen_name, self.text,
                                    self.source)
+        
     def filter(self, items):
         new = Status()
         for attr in items:
