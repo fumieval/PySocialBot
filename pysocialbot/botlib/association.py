@@ -29,7 +29,7 @@ class Association:
 
         if total == {}:
             return [], 0
-        result = list(total.iteritems())
+        result = total.items()
         result.sort(key=lambda x: -x[1])
         
         pick_rest = pick #抽出する量

@@ -11,6 +11,12 @@ def attempt(f, excepting=Exception, *args, **kwargs):
     except excepting:
         return None
 
+def bufferchain(iterable, length):
+    it = iter(iterable)
+    buffer = [None] * (length - 1) + [next(it)]
+    for i in it:
+        buffer = buffer[1:] + [i]
+        yield buffer
 
 def compose(f, g):
     return lambda *args: g(f(*args))
