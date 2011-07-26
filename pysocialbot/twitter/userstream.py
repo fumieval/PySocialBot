@@ -14,19 +14,20 @@ import json
 import threading
 
 from pysocialbot.twitter import User, Status
-from pysocialbot.util.convert import convert_object, convert_class
+from pysocialbot.util import convert_class
+from pysocialbot.struct import Object
 
 STREAM_URL = "https://userstream.twitter.com/2/user.json"
 
 def convert_status(data):
     """convert dictionary to Status object."""
-    result = convert_class(convert_object(data), Status)
+    result = convert_class(Object(data), Status)
     result.user = convert_class(result.user, User)
     return result
 
 def convert_user(data):
     """convert dictionary to User object."""
-    return convert_class(convert_object(data), User)
+    return convert_class(Object(data), User)
 
 def stream(api):
     """Get data from Twitter."""
