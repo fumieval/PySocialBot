@@ -41,7 +41,7 @@ def merge(f, *functions):
     >>> f = lambda x: x + 2
     >>> g = lambda x: x - 3
     >>> A = lambda x, y: x * y
-    >>> F = merge(A, f, g) #λx.(x + 2)(x + 3)
+    >>> F = merge(A, f, g)
     >>> F(2)
     -4
     >>> F(3)
