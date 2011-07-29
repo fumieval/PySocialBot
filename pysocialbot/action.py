@@ -64,10 +64,12 @@ class ActionOr(Action):
 
 class Call(Action):
     """Call specified function."""
-    def __init__(self, function):
+    def __init__(self, function, *args, **kwargs):
         Action.__init__(self)
         self.function = function
+        self.args = args
+        self.kwargs = kwargs
     def __call__(self, env):
-        return self.function(env)
+        return self.function(env, *args, **kwargs)
     def __repr__(self):
         return self.function.__doc__
