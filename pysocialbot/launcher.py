@@ -23,7 +23,7 @@ def newstate(env, trigger, state, action):
             return True
         else:
             result = action(env)
-            if self.debug:
+            if env.debug:
                 print("%s\t%s -> [%s] => %s" % (nowf(),
                                                 repr(trigger), repr(action),
                                                 repr(result)))
@@ -89,9 +89,7 @@ class Daemon():
                 self.state[key] = newstate(self.env, key,
                                            self.state[key],
                                            self.trigger[key])
-            self.queue = \
-            [(k, x) for k, x in self.queue if not (k(self.env) and x(self.env))]
-            
+            self.queue = filter(lambda i: not (i[0](self.env) and i[1](self.env)), self.queue)
             time.sleep(RUN_INTERVAL)
 
 class Flag(trigger.Trigger):
