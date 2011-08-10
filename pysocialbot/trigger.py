@@ -91,7 +91,7 @@ class TriggerInvert(Trigger):
         return "~%s" % repr(self.term)
 
 class FunctionTrigger(Trigger):
-    """Use the function as a trigger."""
+    """Use a function as a trigger."""
     def __init__(self, function):
         Trigger.__init__(self)
         self.function = function

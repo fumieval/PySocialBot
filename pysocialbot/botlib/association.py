@@ -21,7 +21,7 @@ class Association:
     
     def extract(self, source, pick):
         total = {}
-        for item in itertools.ifilter(lambda x: x in self.table, source):
+        for item in itertools.ifilter(lambda x: x[1] in source, self.table):
             for key, value in self.table[item].items():
                 if not key in total:
                     total[key] = 0

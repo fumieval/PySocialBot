@@ -26,7 +26,7 @@ class Action():
         return ActionOr(self, action)
 
 class ActionCombine(Action):
-    """Do two actions."""
+    """It does two actions."""
     def __init__(self, left, right):
         Action.__init__(self)
         self.left = left
@@ -39,8 +39,8 @@ class ActionCombine(Action):
         return "%s + %s" % (repr(self.left), repr(self.right))
 
 class ActionAnd(Action):
-    """If first action returns True,return second action.
-    otherwise,it returns False."""
+    """If first action returns True, It returns second action.
+    otherwise, it returns False."""
     def __init__(self, left, right):
         Action.__init__(self)
         self.left = left
@@ -51,8 +51,8 @@ class ActionAnd(Action):
         return "%s & %s" % (repr(self.left), repr(self.right))
 
 class ActionOr(Action):
-    """If first action returns False,return second action.
-    otherwise,it returns True."""
+    """If first action returns False, it returns second action.
+    otherwise, it returns True."""
     def __init__(self, left, right):
         Action.__init__(self)
         self.left = left
