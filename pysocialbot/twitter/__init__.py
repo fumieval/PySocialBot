@@ -128,12 +128,15 @@ class Status(Object):
         return "@%s: %s via %s" % (self.user.screen_name, self.text,
                                    self.source)
         
+    def __repr__(self):
+        return "http://twitter.com/#!/%s/status/%d" % (self.user.screen_name, self.id)
+
     def filter(self, items):
         new = Status()
         for attr in items:
             new.__dict__[attr] = self.__dict__[attr]
 
     def cleaned(self):
-        return ENTITIES.sub("", xml.sax.saxutils.unescape(self.text))
+        return ENTITIES.sub("", xml.sax.saxutils.unescape(self.text)).strip()
 
 STATUS_FILTER_MINIMAL=['user', 'text', 'source']

@@ -13,13 +13,13 @@ def attempt(f, excepting=Exception, *args, **kwargs):
 
 def bufferchain(iterable, length):
     it = iter(iterable)
-    buffer = [None] * (length - 1) + [next(it)]
+    buf = [None] * (length - 1) + [next(it)]
     for i in it:
-        buffer = buffer[1:] + [i]
-        yield buffer
+        buf = buf[1:] + [i]
+        yield buf
 
 def compose(f, g):
-    return lambda *args: g(f(*args))
+    return lambda *args: f(g(*args))
 
 def ibranch(functions, *args, **kwargs):
     """

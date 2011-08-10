@@ -2,11 +2,12 @@
 PySocialBot daemon
 """
 from __future__ import unicode_literals
+
+from pysocialbot import trigger
 from pysocialbot.settings import RUN_INTERVAL
 from pysocialbot.struct import Object
 
 import datetime
-
 import time
 import cPickle as pickle
 from itertools import ifilter
@@ -22,9 +23,10 @@ def newstate(env, trigger, state, action):
             return True
         else:
             result = action(env)
-            print("%s\t%s -> [%s] => %s" % (nowf(),
-                                            repr(trigger), repr(action),
-                                            repr(result)))
+            if env.debug:
+                print("%s\t%s -> [%s] => %s" % (nowf(),
+                                                repr(trigger), repr(action),
+                                                repr(result)))
             return bool(result)
     else:
         return False
@@ -39,10 +41,12 @@ class Daemon():
     def __init__(self, env=Object()):
         self.env = env
         self.env.daemon = self
+        self.env.flag = {}
         self.trigger = {}
         self.state = {}
         self.queue = []
         self.hooks = []
+        self.debug = False
 
     def push(self, trigger, action):
         """Put trigger and action"""
@@ -66,9 +70,16 @@ class Daemon():
                                   pickle.load(filename).iteritems()):
             self.state[key] = value
 
+    def setflag(self, name, value):
+        self.env.flag[name] = value
+    
+    def getflag(self, name):
+        return self.env.flag[name]
+    
     def run(self):
         """run daemon."""
-        print("%s\tDaemon Start." % nowf())
+        if self.debug:
+            print("%s\tDaemon Start." % nowf())
         
         for hook in self.hooks:
             hook(self.env)
@@ -78,7 +89,12 @@ class Daemon():
                 self.state[key] = newstate(self.env, key,
                                            self.state[key],
                                            self.trigger[key])
-            self.queue = \
-            [(k, x) for k, x in self.queue if not (k(self.env) and x(self.env))]
-            
+            self.queue = filter(lambda i: not (i[0](self.env) and i[1](self.env)), self.queue)
             time.sleep(RUN_INTERVAL)
+
+class Flag(trigger.Trigger):
+    def __init__(self, name):
+        self.name = name
+
+    def __call__(self, env):
+        return env[self.name]
