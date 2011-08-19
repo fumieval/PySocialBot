@@ -55,13 +55,18 @@ def register(argc, param):
     import pysocialbot.twitter.register
     pysocialbot.twitter.register.register()
 
+def registered(argc, param):
+    import pysocialbot.twitter.register
+    print ' '.join(pysocialbot.twitter.register.user_database())
+
 MANAGER_COMMAND = {"post": post,
                    "retweet": retweet,
                    "status": status,
                    "delete": delete,
                    "mentions": mentions,
                    "timeline": timeline,
-                   "register": register,}
+                   "register": register,
+                   "registered": registered,}
 
 def execute_manager(param, *commands):
     """command-line manager."""

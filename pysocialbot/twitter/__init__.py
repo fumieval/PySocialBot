@@ -36,7 +36,7 @@ class Api():
     def __init__(self, auth_name=None):
         """Authenticate and initialize."""
         if auth_name:
-            access_token, access_token_secret = user_database(auth_name)
+            access_token, access_token_secret = user_database()[auth_name]
         else:
             access_token, access_token_secret = instant_auth()
         

@@ -15,7 +15,7 @@ def start(argc, param):
         print("lisabotd(pid %s) already running" %
               open(param["PIDFILE"],"r").read().rstrip("\n"))
     else:
-        os.system("echo -n Starting Lisabot Daemon")
+        os.system("echo -n Starting %s Daemon" % param["screen_name"])
         
         os.system("python %s --pidfile=%s" % (param["SCRIPT"], param["PIDFILE"]))
         
@@ -27,7 +27,7 @@ def start(argc, param):
 def stop(argc, param):
     """stop daemon."""
     if os.access(param["PIDFILE"], os.F_OK):
-        os.system("echo -n Stopping Lisabot Daemon")
+        os.system("echo -n Stopping %s Daemon" % param["screen_name"])
         
         pid = int(open(param["PIDFILE"], "r").read())
         try:
@@ -41,7 +41,7 @@ def stop(argc, param):
             os.system("echo -n .")
         os.system("echo .")
     else:
-        print("lisabotd is not running")
+        print("%s is not running" % param["screen_name"])
 
 def restart(argc, param):
     """restart daemon."""

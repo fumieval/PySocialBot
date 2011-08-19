@@ -41,10 +41,9 @@ def stream(api):
     url = urllib2.urlopen(req, urllib.urlencode(param))
         
     while True:
-        length = ''.join(takewhile(lambda x: x!="\n",
-                                   imap(url.read, repeat(1)))).strip()
+        length = url.readline().strip()
         if length.isdigit():
-            yield json.loads(url.read(int(length)))
+            yield json.loads(url.readline())
 
 class UserStream(threading.Thread):
     

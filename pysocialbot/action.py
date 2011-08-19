@@ -1,4 +1,6 @@
-
+"""
+Action definitions
+"""
 
 class Action():
     """Action base."""
@@ -70,6 +72,16 @@ class Call(Action):
         self.args = args
         self.kwargs = kwargs
     def __call__(self, env):
-        return self.function(env, *args, **kwargs)
+        return self.function(env, *self.args, **self.kwargs)
     def __repr__(self):
-        return self.function.__doc__
+        return "Call(%s, *%s, **%s)" % (repr(self.function), repr(self.args), repr(self.kwargs))
+
+class SetFlag(Action):
+    """Set flag to specified value."""
+    def __init__(self, name, value):
+        Action.__init__(self)
+        self.name = name
+        self.value = value
+    def __call__(self):
+        self.env.flag[name] = self.value
+        return True

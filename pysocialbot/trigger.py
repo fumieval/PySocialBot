@@ -1,5 +1,5 @@
 """
-Trigger is a flexible structure for dealing with the conditions.
+Trigger definitions
 """
 import random
 import datetime
@@ -100,6 +100,14 @@ class FunctionTrigger(Trigger):
     def __repr__(self):
         return "FunctionTrigger(%s)" % repr(self.function)
 
+class Flag(Trigger):
+    def __init__(self, name):
+        Trigger.__init__(self)
+        self.name = name
+    def __call__(self, env):
+        return env.flag[self.name]
+    def __repr__(self):
+        return "Flag(%s)" % repr(self.name)
 class Time(Trigger):
     """Time trigger."""
     def __init__(self, target=datetime.datetime.today()):

@@ -1,3 +1,12 @@
+2011/8/19 PySocialBot 0.3.1 Released
+	Implemented new feature:
+		action.SetFlag
+		trigger.Flag
+	Changes:
+		improved behavior of botlib.association
+		improved performance twitter.userstream
+		and fixed some bugs
+
 2011/7/25 PySocialBot 0.3.0- Released
 	Implemented new feature:
 		botlib (botlib helps you to create a bot)

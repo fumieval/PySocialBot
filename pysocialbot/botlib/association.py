@@ -12,23 +12,24 @@ class Association:
         self.table = {}
         
     def learn(self, source, target):
-        for i, j in itertools.product(set(source), set(target)):
+        for i, j in itertools.product(enumerate(source), enumerate(target)):
             if not i in self.table:
                 self.table[i] = {}
             if not j in self.table[i]:
-                self.table[i][j] = 0
-            self.table[i][j] += 1
+                self.table[i][j] = 0.0
+            self.table[i][j] += 1.0 / len(source)
     
     def extract(self, source, pick):
         total = {}
         for item in itertools.ifilter(lambda x: x[1] in source, self.table):
             for key, value in self.table[item].items():
                 if not key in total:
-                    total[key] = 0
+                    total[key] = 0.0
                 total[key] += value
 
         if total == {}:
-            return [], 0
+            return [], 0.0
+        
         result = total.items()
         result.sort(key=lambda x: -x[1])
         
