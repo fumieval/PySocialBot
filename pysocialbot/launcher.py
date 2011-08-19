@@ -10,6 +10,7 @@ from pysocialbot.struct import Object
 import datetime
 import time
 import cPickle as pickle
+import sys
 from itertools import ifilter
 
 def nowf():
@@ -90,6 +91,7 @@ class Daemon():
                                            self.state[key],
                                            self.trigger[key])
             self.queue = filter(lambda i: not (i[0](self.env) and i[1](self.env)), self.queue)
+            sys.stdout.flush()
             time.sleep(RUN_INTERVAL)
 
 class Flag(trigger.Trigger):
