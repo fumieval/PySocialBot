@@ -13,13 +13,10 @@ from pysocialbot.settings import (TW_CONSUMER_KEY, TW_CONSUMER_SECRET,
                                   TW_ACCESS_TOKEN_URL,
                                   TW_AUTHORIZATION_URL)
 
-def user_database(screen_name):
+def user_database():
     """Get access token from database."""
-    user_db = shelve.open(TW_USER_DB_PATH)
-    if screen_name in user_db:
-        return user_db[screen_name]
-    else:
-        raise ValueError("%s is not registered" % screen_name)
+    return shelve.open(TW_USER_DB_PATH)
+
 
 def instant_auth():
     """instant authenticate."""

@@ -24,7 +24,7 @@ def newstate(env, trigger, state, action):
             return True
         else:
             result = action(env)
-            if env.debug:
+            if env.daemon.debug:
                 print("%s\t%s -> [%s] => %s" % (nowf(),
                                                 repr(trigger), repr(action),
                                                 repr(result)))

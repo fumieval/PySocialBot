@@ -1,4 +1,6 @@
-
+"""
+Action definitions
+"""
 
 class Action():
     """Action base."""
@@ -26,7 +28,7 @@ class Action():
         return ActionOr(self, action)
 
 class ActionCombine(Action):
-    """Do two actions."""
+    """It does two actions."""
     def __init__(self, left, right):
         Action.__init__(self)
         self.left = left
@@ -39,8 +41,8 @@ class ActionCombine(Action):
         return "%s + %s" % (repr(self.left), repr(self.right))
 
 class ActionAnd(Action):
-    """If first action returns True,return second action.
-    otherwise,it returns False."""
+    """If first action returns True, It returns second action.
+    otherwise, it returns False."""
     def __init__(self, left, right):
         Action.__init__(self)
         self.left = left
@@ -51,8 +53,8 @@ class ActionAnd(Action):
         return "%s & %s" % (repr(self.left), repr(self.right))
 
 class ActionOr(Action):
-    """If first action returns False,return second action.
-    otherwise,it returns True."""
+    """If first action returns False, it returns second action.
+    otherwise, it returns True."""
     def __init__(self, left, right):
         Action.__init__(self)
         self.left = left
@@ -70,6 +72,16 @@ class Call(Action):
         self.args = args
         self.kwargs = kwargs
     def __call__(self, env):
-        return self.function(env, *args, **kwargs)
+        return self.function(env, *self.args, **self.kwargs)
     def __repr__(self):
-        return self.function.__doc__
+        return "Call(%s, *%s, **%s)" % (repr(self.function), repr(self.args), repr(self.kwargs))
+
+class SetFlag(Action):
+    """Set flag to specified value."""
+    def __init__(self, name, value):
+        Action.__init__(self)
+        self.name = name
+        self.value = value
+    def __call__(self):
+        self.env.flag[name] = self.value
+        return True

@@ -7,14 +7,14 @@ class Object(object):
     """Generic Structure."""
     
     def __init__(self, data={}):
-        for key, value in data.itervalues():
+        for key, value in data.iteritems():
             if isinstance(value, dict) and "Object" in value: 
                 self.__dict__[key] = Object(value)
             else:
                 self.__dict__[key] = value
 
     def realized(self):
-        """Get data as dictionary."""
+        """Get data as a dictionary."""
         result = {"Object": True}
         for key in self.__dict__:
             if isinstance(self.__dict__[key], Object):
