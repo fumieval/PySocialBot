@@ -74,6 +74,8 @@ class UserStream(threading.Thread):
                     self.handler.block(convert_user(data["source"]))
                 elif event == "user_update":
                     self.handler.user_update(convert_user(data["source"]))
+                elif event == "list_user_subscribed":
+                    pass
                 else:
                     raise NameError("undefined event %s" % event)
             else:
@@ -108,5 +110,8 @@ class StreamHandler():
         """call when someone removed user to list."""
         pass
     def user_update(self, source):
+        """call when user updated its profile."""
+        pass
+    def list_subscribed(self, source):
         """call when user updated its profile."""
         pass

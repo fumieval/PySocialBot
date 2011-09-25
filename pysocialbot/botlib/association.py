@@ -21,8 +21,8 @@ class Association:
     
     def extract(self, source, pick):
         total = {}
-        for item in itertools.ifilter(lambda x: x[1] in source, self.table):
-            for key, value in self.table[item].items():
+        for item in ((x, y) for x, y in self.table if y in source):
+            for key, value in self.table[item].iteritems():
                 if not key in total:
                     total[key] = 0.0
                 total[key] += value
@@ -35,8 +35,7 @@ class Association:
         
         pick_rest = pick #抽出する量
         samples = []
-        for group in itertools.imap(lambda x: list(x[1]),
-                                    itertools.groupby(result, key=lambda x: -x[1])):
+        for group in (list(y) for x, y in itertools.groupby(result, key=lambda x: -x[1])):
             if len(group) >= pick_rest:
                 samples.extend(random.sample(group, pick_rest))
                 break
@@ -45,8 +44,8 @@ class Association:
                 pick_rest -= len(group)
                 if pick_rest <= 0:
                     break
-        return (map(lambda x: x[0], samples),
-                sum(itertools.imap(lambda x: x[1], samples)) / len(samples))
+        return ([x for x, y in samples],
+                sum(y for x, y in samples) / len(samples))
     
     def load(self, file):
         self.table = pickle.load(file)
