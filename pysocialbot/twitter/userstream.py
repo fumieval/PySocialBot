@@ -92,25 +92,25 @@ class StreamHandler():
         """call when recieve new status."""
         pass
     def follow(self, source):
-        """call when someone followed user."""
+        """call when someone followed the user."""
         pass
     def favorite(self, source):
-        """call when someone faved user's tweet."""
+        """call when someone faved the user's tweet."""
         pass
     def block(self, source):
-        """call when user blocks someone."""
+        """call when the user blocks someone."""
         pass
     def unfavorite(self, source):
-        """call when someone unfaved user's tweet."""
+        """call when someone unfaved the user's tweet."""
         pass
     def list_add(self, source):
-        """call when someone added user to list."""
+        """call when someone added the user to list."""
         pass
     def list_remove(self, source):
-        """call when someone removed user to list."""
+        """call when someone removed the user to list."""
         pass
     def user_update(self, source):
-        """call when user updated its profile."""
+        """call when the user updated its profile."""
         pass
     def list_subscribed(self, source):
         """call when user updated its profile."""
