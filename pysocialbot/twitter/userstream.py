@@ -1,11 +1,6 @@
 """
 PySocialBot Twitter UserStream
 """
-from itertools import takewhile, repeat
-try:
-    from itertools import imap
-except ImportError:
-    imap = map
 
 import urllib
 import urllib2
@@ -60,22 +55,31 @@ class UserStream(threading.Thread):
         for data in stream(self.api):
             if 'event' in data:
                 event = data['event']
+                
                 if event == "follow":
                     self.handler.follow(convert_user(data["source"]))
+                    
                 elif event == "favorite":
                     self.handler.favorite(convert_user(data["source"]))
+                    
                 elif event == "unfavorite":
                     self.handler.unfavorite(convert_user(data["source"]))
+                    
                 elif event == "list_member_added":
                     self.handler.list_add(convert_user(data["source"]))
+                    
                 elif event == "list_member_removed":
                     self.handler.list_remove(convert_user(data["source"]))
+                    
                 elif event == "block":
                     self.handler.block(convert_user(data["source"]))
+                    
                 elif event == "user_update":
                     self.handler.user_update(convert_user(data["source"]))
+                    
                 else:
                     raise NameError("undefined event %s" % event)
+                
             else:
                 if 'user' in data and "id" in data:
                     self.handler.status(convert_status(data))

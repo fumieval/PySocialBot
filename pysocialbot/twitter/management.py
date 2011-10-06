@@ -3,8 +3,8 @@ PySocialBot management tool
 """
 import sys
 import pysocialbot.twitter
-
-USAGE = "Usage: python %s" % sys.argv[0]
+import pysocialbot.twitter.register
+from pysocialbot.manager import USAGE
 
 def getapi(param):
     return pysocialbot.twitter.Api(param["screen_name"])
@@ -40,26 +40,24 @@ def mentions(argc, param):
         m = getapi(param).mentions()
     elif argc == 2:
         m = getapi(param).mentions(page=sys.argv[2])
-    for status in m:
-        print(unicode(status))
+    for s in m:
+        print(unicode(s))
         
 def timeline(argc, param):
     if argc == 1:
         timeline = getapi(param).timeline()
     elif argc == 2:
         timeline = getapi(param).timeline(page=sys.argv[2])
-    for status in timeline:
-        print(unicode(status))
+    for s in timeline:
+        print(unicode(s))
         
 def register(argc, param):
-    import pysocialbot.twitter.register
     pysocialbot.twitter.register.register()
 
 def registered(argc, param):
-    import pysocialbot.twitter.register
     print ' '.join(pysocialbot.twitter.register.user_database())
 
-MANAGER_COMMAND = {"post": post,
+TWITTER_COMMAND = {"post": post,
                    "retweet": retweet,
                    "status": status,
                    "delete": delete,
@@ -67,14 +65,3 @@ MANAGER_COMMAND = {"post": post,
                    "timeline": timeline,
                    "register": register,
                    "registered": registered,}
-
-def execute_manager(param, *commands):
-    """command-line manager."""
-    argc = len(sys.argv) - 1
-    if argc < 1:
-        print(USAGE + " [action]")
-    else:
-        for commandset in (MANAGER_COMMAND,) + commands:
-            if sys.argv[1] in commandset:
-                return commandset[sys.argv[1]](argc, param)
-        print("Action %s is not defined" % sys.argv[1])

@@ -3,9 +3,9 @@ PySocialBot daemon
 """
 from __future__ import unicode_literals
 
-from pysocialbot import trigger
+from pysocialbot.trigger import Trigger
 from pysocialbot.settings import RUN_INTERVAL
-from pysocialbot.struct import Object
+from pysocialbot.struct import Object, Action
 
 import datetime
 import time
@@ -24,10 +24,7 @@ def newstate(env, trigger, state, action):
             return True
         else:
             result = action(env)
-            if env.daemon.debug:
-                print("%s\t%s -> [%s] => %s" % (nowf(),
-                                                repr(trigger), repr(action),
-                                                repr(result)))
+            print "%s\t%r -> [%r] => %r" % (nowf(), trigger, action, result)
             return bool(result)
     else:
         return False
@@ -90,13 +87,24 @@ class Daemon():
                 self.state[key] = newstate(self.env, key,
                                            self.state[key],
                                            self.trigger[key])
-            self.queue = filter(lambda i: not (i[0](self.env) and i[1](self.env)), self.queue)
+            self.queue = [(t, a) for t, a in self.queue \
+                          if not (t(self.env) and a(self.env))]
             sys.stdout.flush()
             time.sleep(RUN_INTERVAL)
 
-class Flag(trigger.Trigger):
+class Flag(Trigger):
+    """This trigger gets flag."""
     def __init__(self, name):
+        Trigger.__init__(self)
         self.name = name
-
     def __call__(self, env):
-        return env[self.name]
+        return env.flag[self.name]
+    def __repr__(self):
+        return "Flag(%r)" % self.name
+
+class SetFlag(Action):
+    """This action sets the flag to specified value."""
+    def __init__(self, env, name, value):
+        def f():
+            env.flag[name] = value
+        Action.__init__(self, f)

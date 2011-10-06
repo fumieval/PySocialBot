@@ -56,7 +56,7 @@ class TriggerAnd(Trigger):
     def __call__(self, env):
         return self.left(env) and self.right(env)
     def __repr__(self):
-        return "%s & %s" % (repr(self.left), repr(self.right))
+        return "%r & %r" % (self.left, self.right)
 
 class TriggerXor(Trigger):
     """Exclusive intersection between triggers."""
@@ -67,7 +67,7 @@ class TriggerXor(Trigger):
     def __call__(self, env):
         return self.left(env) ^ self.right(env)
     def __repr__(self):
-        return "%s ^ %s" % (repr(self.left), repr(self.right))
+        return "%r ^ %r" % (self.left, self.right)
 
 class TriggerOr(Trigger):
     """Disjunction between triggers."""
@@ -78,7 +78,7 @@ class TriggerOr(Trigger):
     def __call__(self, env):
         return self.left(env) or self.right(env)
     def __repr__(self):
-        return "%s | %s" % (repr(self.left), repr(self.right))
+        return "%r | %r" % (self.left, self.right)
 
 class TriggerInvert(Trigger):
     """Negation of the trigger."""
@@ -88,7 +88,7 @@ class TriggerInvert(Trigger):
     def __call__(self, env):
         return not self.term(env)
     def __repr__(self):
-        return "~%s" % repr(self.term)
+        return "~%r" % self.term
 
 class FunctionTrigger(Trigger):
     """Use a function as a trigger."""
@@ -98,16 +98,8 @@ class FunctionTrigger(Trigger):
     def __call__(self, env):
         return self.function(env)
     def __repr__(self):
-        return "FunctionTrigger(%s)" % repr(self.function)
+        return "FunctionTrigger(%r)" % self.function
 
-class Flag(Trigger):
-    def __init__(self, name):
-        Trigger.__init__(self)
-        self.name = name
-    def __call__(self, env):
-        return env.flag[self.name]
-    def __repr__(self):
-        return "Flag(%s)" % repr(self.name)
 class Time(Trigger):
     """Time trigger."""
     def __init__(self, target=datetime.datetime.today()):
@@ -116,15 +108,13 @@ class Time(Trigger):
     def __call__(self, env):
         return datetime.datetime.today() >= self.time
     def __repr__(self):
-        return "Time(%s)" % repr(self.time)
+        return "Time(%r)" % self.time
 
 class Delay(Time):
     """Delay trigger."""
     def __init__(self, offset=datetime.timedelta()):
         Trigger.__init__(self)
         self.time = datetime.datetime.today() + offset
-    def __call__(self, env):
-        return datetime.datetime.today >= self.time
 
 class Regular(Trigger):
     """Trigger effects at regular intervals."""
@@ -142,7 +132,7 @@ class Regular(Trigger):
         return ((target.hour * 60 + target.minute) * 60 +
                 target.second) % self.span == 0
     def __repr__(self):
-        return "Regular(%d, %s)" % (self.span, str(self.offset))
+        return "Regular(%r, %r)" % (self.span, self.offset)
 
 class Hourly(Trigger):
     """Trigger effects hourly."""
@@ -152,7 +142,7 @@ class Hourly(Trigger):
     def __call__(self, env):
         return (datetime.datetime.today() - self.offset).minute == 0
     def __repr__(self):
-        return "Hourly(%s)" % str(self.offset)
+        return "Hourly(%r)" % self.offset
 
 class Daily(Trigger):
     """Trigger effects daily."""
@@ -162,7 +152,7 @@ class Daily(Trigger):
     def __call__(self, env):
         return (datetime.datetime.today() - self.offset).hour == 0
     def __repr__(self):
-        return "Daily(%s)" % str(self.offset)
+        return "Daily(%r)" % self.offset
 
 class Weekly(Trigger):
     """Trigger effects weekly."""
@@ -170,9 +160,9 @@ class Weekly(Trigger):
         Trigger.__init__(self)
         self.offset = offset
     def __call__(self, env):
-        return (datetime.datetime.today()-self.offset).weekday() == 0
+        return (datetime.datetime.today() - self.offset).weekday() == 0
     def __repr__(self):
-        return "Weekly(%s)" % str(self.offset)
+        return "Weekly(%r)" % self.offset
 
 class Monthly(Trigger):
     """Trigger effects monthly."""
@@ -183,7 +173,7 @@ class Monthly(Trigger):
     def __call__(self, env):
         return (datetime.datetime.today() - self.offset).day == self.day
     def __repr__(self):
-        return "Monthly(%02d, %s)" % (self.day, str(self.offset))
+        return "Monthly(%r, %r)" % (self.day, self.offset)
 
 class Yearly(Trigger):
     """Trigger effects yearly."""
@@ -194,7 +184,7 @@ class Yearly(Trigger):
     def __call__(self, env):
         return (datetime.datetime.today() - self.offset).month == self.month
     def __repr__(self):
-        return "Yearly(%02d, %s)" % (self.month, str(self.offset))
+        return "Yearly(%r, %r)" % (self.month, self.offset)
 
 class InDailyPeriod(Trigger):
     """Trigger effects between specified section."""
@@ -208,8 +198,7 @@ class InDailyPeriod(Trigger):
         return (self.begin == None or self.begin <= now) and \
                (self.end == None or self.end >= now)
     def __repr__(self):
-        return "InDailySection(%s, %s)" % (str(self.begin).split()[1],
-                                           str(self.end).split()[1])
+        return "InDailySection(%r, %r)" % (self.begin, self.end)
 
 class InYearlyPeriod(Trigger):
     """Trigger effects between specified section."""
@@ -222,7 +211,7 @@ class InYearlyPeriod(Trigger):
         return (self.begin == None or self.begin <= now) and \
                (self.end == None or self.end >= now)
     def __repr__(self):
-        return "InDailySection(%s, %s)" % (str(self.begin), str(self.end))
+        return "InDailySection(%r, %r)" % (self.begin, self.end)
 
 class Randomly(Trigger):
     """Trigger effects randomly."""
@@ -232,4 +221,4 @@ class Randomly(Trigger):
     def __call__(self, env):
         return random.random() < self.probability
     def __repr__(self):
-        return "Randomly(%s)" % str(self.probability)
+        return "Randomly(%r)" % self.probability
