@@ -102,6 +102,10 @@ class Flag(Trigger):
     def __repr__(self):
         return "Flag(%r)" % self.name
 
+class Call(Action):
+    def __init__(self, f, *args, **kwargs):
+        Action.__init__(lambda: f(*args, **kwargs))
+        
 class SetFlag(Action):
     """This action sets the flag to specified value."""
     def __init__(self, env, name, value):

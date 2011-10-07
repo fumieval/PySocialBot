@@ -20,10 +20,19 @@ class Regex(Pattern):
     def __call__(self, text, env):
         return self.pattern.search(text)
 
+class SubPattern:
+    def __init__(self, patterns):
+        self.patterns = patterns
+    def __call__(self, text, env):
+        return check(self.patterns, text, env)
+
+ISREPLY = Regex("^@\w+")
+ISMENTION = Regex("@\w+")
+
 def choice(*args):
-    return random.choice(args)
+    return lambda text, env: random.choice(args)
 
 def check(patterns, text, env=None):
     for pattern, action in patterns:
         if pattern(text, env):
-            return action(env)
+            return action(text, env)

@@ -2,7 +2,6 @@
 PySocialBot management tool
 """
 import sys
-import pysocialbot.twitter
 import pysocialbot.twitter.register
 from pysocialbot.manager import USAGE
 
